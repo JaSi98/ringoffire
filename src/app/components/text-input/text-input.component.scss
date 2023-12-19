@@ -1,0 +1,33 @@
+.styled-input-container {
+    display: flex;
+    border-radius: 10px;
+    border: 1px solid #D1D1D1;
+    background-color: white;
+    padding: 5px;
+    align-items: center;
+    transition: border 0.3s; /* Fügt eine Übergangsanimation für die Umrandung hinzu */
+    box-sizing: border-box;
+  
+    .input-icon {
+      margin-right: 10px;
+      width: 20px;
+      height: 20px;
+      cursor: default;
+    }
+  
+    &.focus {
+      border: 1px solid #0195d581; /* Ändert die Umrandungsfarbe des Containers */
+    }
+  
+    input {
+      border: none;
+      outline: none;
+      width: 100%;
+      padding: 8px;
+      font-size: 1em;
+    }
+  }
+  
+  .toggle-password-icon {
+    cursor: pointer;
+  }

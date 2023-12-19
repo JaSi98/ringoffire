@@ -1,0 +1,71 @@
+.styled-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Schatten hinzufügen */
+  /* Standard-Stil */
+}
+
+.styled-button.default {
+  background-color: #01ADF7;
+  color: #fff;
+}
+
+.styled-button.primary {
+  background-color: #01ADF7;
+  color: #fff;
+}
+
+.styled-button.secondary {
+  border: 2px solid #01ADF7;
+  color: #01ADF7;
+  background-color: #fff;
+}
+
+.styled-button.danger {
+  color: #ffffff;
+  background-color: #F44336;
+}
+
+.styled-button.warning {
+  color: #ffffff;
+  background-color: #fde400;
+}
+
+.styled-button.success {
+  color: #ffffff;
+  background-color: #6EE688;
+}
+
+.styled-button:hover {
+  transform: translateY(-2px); /* Leichte Verschiebung nach oben */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Größerer Schatten beim Hover */
+}
+
+.styled-button:active {
+  transform: translateY(1px); /* Leichte Verschiebung nach unten, um einen gedrückten Effekt zu erzeugen */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Kleinerer Schatten beim Drücken */
+}
+
+.styled-button.secondary:hover {
+  border: 2px solid #0195d5;
+  color: #0195d5;
+  background-color: #fff;
+}
+
+.button-icon {
+  margin-right: 10px;
+  max-height: 24px;
+}
+
+.styled-button:disabled {
+  background-color: #e0e0e0; /* Grauer Hintergrund für deaktivierte Buttons */
+  color: #a0a0a0; /* Grauer Text für deaktivierte Buttons */
+  cursor: not-allowed; /* Cursor-Symbol für nicht zulässige Aktion */
+  box-shadow: none; /* Kein Schatten für deaktivierte Buttons */
+}

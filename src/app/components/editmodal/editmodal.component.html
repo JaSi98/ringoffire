@@ -1,0 +1,18 @@
+<!-- modal.component.html -->
+<div class="modal-backdrop" *ngIf="isModalOpen" [ngClass]="{'modal-backdrop-closing': isClosing}" (click)="handleBackgroundClick($event)">
+  <div class="modal" [ngClass]="{'modal-closing': isClosing}">
+      <div class="modal-content">
+      <!-- Bereich für die dynamische Überschrift -->
+      <h3><strong>{{ title }}</strong></h3>
+      
+      <!-- Bereich für den dynamischen Hauptinhalt -->
+      <ng-container #contentContainer></ng-container>
+
+      <!-- Buttons können konstant bleiben -->
+    </div>
+      <div class="buttons">
+        <button class="check-button" (click)="check()"><span class="material-icons">check</span></button>
+        <button class="reject-button" (click)="abort()"><span class="material-icons">close</span></button>
+      </div>
+    </div>
+</div>

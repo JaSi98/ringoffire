@@ -1,0 +1,6 @@
+<div class="player-container">
+    <div class="player" *ngFor="let player of players; let i = index" [style.background]="player.color" [class.player-active]="i === currentPlayer">
+        <img src="/assets/img/profile/{{ player.avatar }}">
+        <span>{{ player.name }}</span>
+    </div>
+</div>

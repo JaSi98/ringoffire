@@ -1,0 +1,8 @@
+<div class="styled-input-container" [class.focus]="isInputFocused">
+    <span class="material-icons input-icon" *ngIf="icon">{{ icon }}</span>
+    <input [type]="password && !showPassword ? 'password' : 'text'" [placeholder]="placeholder" [(ngModel)]="value" (focus)="onInputFocus()" (blur)="onInputBlur()" />
+    
+    <!-- Bedingte Anzeige der Icons für Sichtbarkeit -->
+    <span class="material-icons toggle-password-icon" *ngIf="password && !showPassword" (click)="togglePasswordVisibility()">visibility</span>
+    <span class="material-icons toggle-password-icon" *ngIf="password && showPassword" (click)="togglePasswordVisibility()">visibility_off</span>
+</div>

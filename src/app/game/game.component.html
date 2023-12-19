@@ -1,0 +1,33 @@
+<app-player class="player-position"></app-player>
+<div class="field">
+    <div class="cardStack">
+        <!--Card Stack-->
+        <img *ngFor="let c of [0,1,2,3,4]; let i = index;" [ngStyle]="{'right.px':  i*5}" src="/assets/img/cards/card_cover.png" alt="">
+        <img (click)="takeCard()" class="top-card" style="right: 25px;" src="/assets/img/cards/card_cover.png" alt="">
+
+        <!--Stack for played cards-->
+        <img *ngFor="let card of game.playedCards" class="played-card" src="/assets/img/cards/{{ card }}.png" alt="">
+
+        <!--Current Card (Animation)-->
+        <img *ngIf="pickCardAnimation" class="pick-card" style="right: 25px;" src="/assets/img/cards/{{ currentCard }}.png" alt="">
+    </div>
+</div>
+<js-button color="primary" icon="add" class="add-player-btn" (click)="openAddPlayer()"></js-button>
+
+<ng-template #newPlayerTemplate>
+    <p>Gebe deine Daten ein und klicke auf das Häkchen, um den Spieler zum Spiel hinzuzufügen.</p>
+    <span class="error" *ngIf="showAvatarError">Bitte Wähle einen Avatar</span>
+    <div class="option-container">
+        <img src="/assets/img/profile/{{avatar}}" alt="" class="avatar" [class.active]="avatar === newPlayerAvatar" *ngFor="let avatar of choosableAvatars" (click)="selectAvatar(avatar)">
+    </div>
+    <span class="error" *ngIf="showColorError">Bitte wähle eine Farbe</span>
+    <div class="option-container">
+        <div class="color" [class.active]="color === newPlayerColor" *ngFor="let color of choosableColors" [style.background]="color" (click)="selectColor(color)"></div>
+    </div>
+    <span class="error" *ngIf="showNameError">Bitte wähle einen Namen</span>
+    <js-text-input icon="person_add" placeholder="Spielername eintippen..." [(ngModel)]="newPlayerName"></js-text-input>
+</ng-template>
+
+<js-card [title]="currentRule?.title ? currentRule.title : 'Zum Starten karte ziehen...'" class="task-card" *ngIf="!startForbidden">
+    <p>{{ currentRule?.description ? currentRule.description : 'Klicke auf den Kartenstapel, um eine Karte zu ziehen, wenn alle Spieler hinzugefügt und bereit sind.' }}</p>
+</js-card>

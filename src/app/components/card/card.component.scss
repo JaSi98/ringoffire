@@ -1,0 +1,25 @@
+.card-3d {
+    display: inline-block;
+    flex-direction: column;
+    transform-style: preserve-3d;
+    transition: transform 0.3s;
+    height: auto;
+    width: auto;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  
+    h3 {
+      color: #0197D5;
+      margin: 0;
+      padding: 18px 24px;
+      border-bottom: 1px solid #ddd;
+      font-size: 1.5rem;
+    }
+  
+    .card-content {
+      padding: 18px 24px;
+    }
+  }
+  

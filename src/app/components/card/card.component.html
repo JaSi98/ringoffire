@@ -1,0 +1,6 @@
+<div class="card-3d" (click)="$event.stopPropagation()">
+    <h3 *ngIf="title">{{ title }}</h3>
+    <div class="card-content">
+        <ng-content></ng-content>
+    </div>
+</div>

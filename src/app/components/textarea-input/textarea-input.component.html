@@ -1,0 +1,4 @@
+<div class="styled-textarea-container" [class.focus]="isInputFocused">
+    <img *ngIf="icon" [src]="icon" class="input-icon" />
+    <textarea [placeholder]="placeholder" [(ngModel)]="value" (focus)="onInputFocus()" (blur)="onInputBlur()"></textarea>
+</div>
