@@ -1,5 +1,5 @@
 .start-screen {
-    background-image: url(/assets/img/ring-of-fire-landscape.jpg);
+    background-image: url('/assets/img/ring-of-fire-landscape.jpg');
     background-size: 100% auto;
     background-position: top center;
     background-repeat: no-repeat;
@@ -10,7 +10,7 @@
 
     // Media Query für Portrait-Modus
     @media (orientation: portrait) {
-        background-image: url(/assets/img/ring-of-fire-portrait.jpg); // Hintergrund für Portrait
+        background-image: url('/assets/img/ring-of-fire-portrait.jpg'); // Hintergrund für Portrait
     }
 }
 

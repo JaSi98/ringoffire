@@ -1,7 +1,7 @@
 <div class="player-container">
     <div class="player" *ngFor="let player of getVisiblePlayers(); let i = index; trackBy: trackByPlayers" class="player"
          [style.background]="player.color" [class.player-active]="player === players[currentPlayer]">
-      <img src="/assets/img/profile/{{ player.avatar }}">
+      <img src="assets/img/profile/{{ player.avatar }}">
       <span>{{ player.name }}</span>
     </div>
   </div>  

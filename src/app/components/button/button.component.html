@@ -1,5 +1,5 @@
 <button [ngClass]="['styled-button', color]" [disabled]="isDisabled">
-    <img *ngIf="loading; else iconTemplate" src="/assets/img/icons/loading.svg" class="button-icon" alt="Loading">
+    <img *ngIf="loading; else iconTemplate" src="assets/img/icons/loading.svg" class="button-icon" alt="Loading">
     <ng-template #iconTemplate>
         <span class="material-icons" *ngIf="icon">{{ icon }}</span>
     </ng-template>

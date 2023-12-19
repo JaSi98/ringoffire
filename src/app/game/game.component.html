@@ -4,16 +4,16 @@
         <js-button color="primary" icon="refresh" (click)="resetGame()"></js-button>
         <!--Card Stack-->
         <img *ngFor="let c of displayStack; let i = index;" [ngStyle]="{'right.px':  i*1}"
-            src="/assets/img/cards/card_cover.png" alt="">
+            src="assets/img/cards/card_cover.png" alt="">
         <img *ngIf="game.stack.length !== 0" [ngStyle]="{'right.px': (displayStack.length - 1) * 1}"
-            (click)="takeCard()" class="top-card" src="/assets/img/cards/card_cover.png" alt="">
+            (click)="takeCard()" class="top-card" src="assets/img/cards/card_cover.png" alt="">
 
         <!--Stack for played cards-->
-        <img *ngFor="let card of game.playedCards" class="played-card" src="/assets/img/cards/{{ card }}.png" alt="">
+        <img *ngFor="let card of game.playedCards" class="played-card" src="assets/img/cards/{{ card }}.png" alt="">
 
         <!--Current Card (Animation)-->
         <img *ngIf="pickCardAnimation" class="pick-card" style="right: 25px;"
-            src="/assets/img/cards/{{ currentCard }}.png" alt="">
+            src="assets/img/cards/{{ currentCard }}.png" alt="">
     </div>
 </div>
 <js-button color="primary" icon="add" class="add-player-btn" (click)="openAddPlayer()"></js-button>
@@ -22,7 +22,7 @@
     <p>Gebe deine Daten ein und klicke auf das Häkchen, um den Spieler zum Spiel hinzuzufügen.</p>
     <span class="error" *ngIf="showAvatarError">Bitte Wähle einen Avatar</span>
     <div class="option-container">
-        <img src="/assets/img/profile/{{avatar}}" alt="" class="avatar" [class.active]="avatar === newPlayerAvatar"
+        <img src="assets/img/profile/{{avatar}}" alt="" class="avatar" [class.active]="avatar === newPlayerAvatar"
             *ngFor="let avatar of choosableAvatars" (click)="selectAvatar(avatar)">
     </div>
     <span class="error" *ngIf="showColorError">Bitte wähle eine Farbe</span>
