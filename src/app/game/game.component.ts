@@ -1,7 +1,9 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { Game } from 'src/models/game';
 import { GameService } from '../services/game.service';
 import { EditModalService } from '../components/editmodal/editmodal.service';
+import { Subscription } from 'rxjs';
+import { Player } from 'src/models/player';
 
 @Component({
   selector: 'app-game',
@@ -17,6 +19,7 @@ export class GameComponent {
   newPlayerAvatar: string;
   newPlayerColor: string;
   public game!: Game;
+  currentPlayerData: Player = new Player('Der Spieler', '', '');
   choosableAvatars: string[] = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png'];
   choosableColors = [
     '#FF5733', // Rot
@@ -35,23 +38,23 @@ export class GameComponent {
     },
     {
       "title": "Fragemeister",
-      "description": "Der Spieler wird zum Fragemeister. Wer ihm antwortet, muss trinken."
+      "description": `${this.currentPlayerData.name} wird zum Fragemeister. Wer ihm antwortet, muss trinken.`
     },
     {
       "title": "Daumenmeister",
-      "description": "Der Spieler wird zum Daumenmeister. Wenn er seinen Daumen auf den Tisch legt, müssen alle folgen. Der Letzte trinkt."
+      "description": `${this.currentPlayerData.name} wird zum Daumenmeister. Wenn er seinen Daumen auf den Tisch legt, müssen alle folgen. Der Letzte trinkt.`
     },
     {
       "title": "Kategorien",
-      "description": "Der Spieler wählt eine Kategorie, und jeder muss abwechselnd ein Beispiel nennen. Wer zögert oder falsch antwortet, trinkt."
+      "description": `${this.currentPlayerData.name} wählt eine Kategorie, und jeder muss abwechselnd ein Beispiel nennen. Wer zögert oder falsch antwortet, trinkt.`
     },
     {
       "title": "Reim",
-      "description": "Der Spieler sagt ein Wort, und die anderen müssen reimen. Wer nicht kann, trinkt."
+      "description": `${this.currentPlayerData.name} sagt ein Wort, und die anderen müssen reimen. Wer nicht kann, trinkt.`
     },
     {
       "title": "Partner",
-      "description": "Der Spieler wählt einen Trinkpartner. Wenn einer trinkt, trinkt der andere auch."
+      "description": `${this.currentPlayerData.name} wählt einen Trinkpartner. Wenn einer trinkt, trinkt der andere auch.`
     },
     {
       "title": "Himmel",
@@ -71,15 +74,15 @@ export class GameComponent {
     },
     {
       "title": "Trinken",
-      "description": "Der Spieler trinkt."
+      "description": `${this.currentPlayerData.name} trinkt.`
     },
     {
       "title": "Verteilen",
-      "description": "Der Spieler darf zwei Schlücke an jemanden verteilen."
+      "description": `${this.currentPlayerData.name} darf zwei Schlücke an jemanden verteilen.`
     },
     {
       "title": "Regel",
-      "description": "Der Spieler darf eine Regel aufstellen, die für den Rest des Spiels gilt."
+      "description": `${this.currentPlayerData.name} darf eine Regel aufstellen, die für den Rest des Spiels gilt.`
     }
   ];
   currentRule: { title: string; description: string };
@@ -88,15 +91,34 @@ export class GameComponent {
   showColorError: boolean = false;
   showAvatarError: boolean = false;
   preventAddPlayer: boolean = true;
+  private subscription: Subscription;
+  gameIsOver: boolean = false;
+  displayStack: string[] = [];
+  cardOffset: number = 0;
+
 
   ngOnInit(): void {
     this.newGame();
     this.checkZeroPlayer();
+    this.subscription = this.gameService.getCurrentPlayerData().subscribe(currentPlayerData => {
+      this.currentPlayerData = currentPlayerData;
+      this.updateRules();
+    });
+    this.subscription = this.gameService.gameIsOver().subscribe(gameIsOver => {
+      this.gameIsOver = gameIsOver;
+    });
+    this.removeLastFromDisplayStack();
   }
 
   newGame() {
     this.gameService.startGame();
     this.game = this.gameService.getGame();
+  }
+
+  resetGame() {
+    this.gameService.resetGame();
+    this.game = this.gameService.getGame();
+    this.currentCard = '';
   }
 
   takeCard() {
@@ -106,10 +128,13 @@ export class GameComponent {
         this.pickCardAnimation = true;
         this.getRule();
         this.gameService.nextPlayer();
+        this.displayStack = [...this.game.stack];
+        this.cardOffset += 4;
         setTimeout(() => {
           this.game.playedCards.push(this.currentCard)
           this.pickCardAnimation = false;
         }, 1000);
+        this.gameService.isGameOver();
       }
     }
     else {
@@ -188,6 +213,74 @@ export class GameComponent {
     } else {
       this.preventAddPlayer = true;
       return false;
+    }
+  }
+
+  updateRules() {
+    if (this.currentPlayerData) {
+
+
+      this.rules = [
+        {
+          "title": "Wasserfall",
+          "description": "Alle Spieler beginnen zu trinken, und niemand darf aufhören, bis die Person zu ihrer Rechten aufhört."
+        },
+        {
+          "title": "Fragemeister",
+          "description": `${this.currentPlayerData.name} wird zum Fragemeister. Wer ihm antwortet, muss trinken.`
+        },
+        {
+          "title": "Daumenmeister",
+          "description": `${this.currentPlayerData.name} wird zum Daumenmeister. Wenn er seinen Daumen auf den Tisch legt, müssen alle folgen. Der Letzte trinkt.`
+        },
+        {
+          "title": "Kategorien",
+          "description": `${this.currentPlayerData.name} wählt eine Kategorie, und jeder muss abwechselnd ein Beispiel nennen. Wer zögert oder falsch antwortet, trinkt.`
+        },
+        {
+          "title": "Reim",
+          "description": `${this.currentPlayerData.name} sagt ein Wort, und die anderen müssen reimen. Wer nicht kann, trinkt.`
+        },
+        {
+          "title": "Partner",
+          "description": `${this.currentPlayerData.name} wählt einen Trinkpartner. Wenn einer trinkt, trinkt der andere auch.`
+        },
+        {
+          "title": "Himmel",
+          "description": "Alle Spieler strecken die Hand in die Luft. Der Letzte trinkt."
+        },
+        {
+          "title": "Schlangen",
+          "description": "Alle Spieler müssen auf dem Boden kriechen. Der Letzte trinkt."
+        },
+        {
+          "title": "Jungs",
+          "description": "Alle männlichen Spieler trinken."
+        },
+        {
+          "title": "Mädels",
+          "description": "Alle weiblichen Spieler trinken."
+        },
+        {
+          "title": "Trinken",
+          "description": `${this.currentPlayerData.name} trinkt.`
+        },
+        {
+          "title": "Verteilen",
+          "description": `${this.currentPlayerData.name} darf zwei Schlücke an jemanden verteilen.`
+        },
+        {
+          "title": "Regel",
+          "description": `${this.currentPlayerData.name} darf eine Regel aufstellen, die für den Rest des Spiels gilt.`
+        }
+      ];
+    }
+  }
+
+  removeLastFromDisplayStack() {
+    this.displayStack = [...this.game.stack]
+    if (this.displayStack.length > 0) {
+      this.displayStack.pop(); // Entfernt das letzte Element aus `displayStack`
     }
   }
 }

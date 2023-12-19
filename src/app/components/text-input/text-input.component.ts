@@ -38,22 +38,18 @@ export class TextInputComponent {
     this.showPassword = !this.showPassword;
   }
 
-  // Implementieren Sie die writeValue-Methode, um den Wert des Steuerelements festzulegen
   writeValue(value: any): void {
     this.innerValue = value;
   }
 
-  // Implementieren Sie die registerOnChange-Methode, um Änderungen am Wert zu überwachen
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
 
-  // Implementieren Sie die registerOnTouched-Methode, um festzulegen, dass das Steuerelement berührt wurde
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 
-  // Schreiben Sie eine Methode, um den Wert zu aktualisieren und die onChange-Funktion aufzurufen
   updateValue(newValue: any): void {
     this.innerValue = newValue;
     this.onChange(newValue);

@@ -13,6 +13,7 @@ import { CardComponent } from './components/card/card.component';
 import { EditmodalComponent } from './components/editmodal/editmodal.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    CommonModule
+    CommonModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

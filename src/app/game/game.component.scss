@@ -60,6 +60,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 16px;
     margin-top: 16px;
     margin-bottom: 16px;
@@ -95,6 +96,7 @@
     position: absolute;
     bottom: 16px;
     left: 16px;
+    right: 86px;
 }
 
 .error {
@@ -117,5 +119,34 @@
 
     100% {
         transform: scale(1.3) translateX(-180px) translateY(-200px) rotate(10deg);
+    }
+}
+
+@media (max-width: 800px) {
+    .played-card {
+        transform: scale(1.3) translateY(-200px) rotate(10deg);
+    }
+    
+    .pick-card {
+        transition: all 125ms ease-in-out;
+        animation: pick-card-animation-small 1s ease-in-out;
+        transform: scale(1.3) translateY(-200px) rotate(10deg);
+    }
+    @keyframes pick-card-animation-small {
+        0% {
+            transform: scale(1);
+        }
+    
+        40% {
+            transform: scale(1.7);
+        }
+    
+        50% {
+            transform: scale(1.7);
+        }
+    
+        100% {
+            transform: scale(1.3) translateY(-200px) rotate(10deg);
+        }
     }
 }

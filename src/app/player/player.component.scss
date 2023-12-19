@@ -14,6 +14,8 @@
     border-top-left-radius: 18px;
     box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, 0.5);
     transition: all 125ms ease-in-out;
+    box-sizing: border-box;
+    animation: moveUp 0.5s ease forwards;
 
     span {
         font-size: 32px;
@@ -31,4 +33,23 @@
 
 .player-active {
     width: 400px;
+}
+
+@keyframes moveUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+@media (max-width: 1000px) {
+    .player {
+        width: 78px;
+    }
+
+    .player-active {
+        border: 4px solid white;
+    }
 }
