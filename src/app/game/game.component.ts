@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, TemplateRef, ViewChild, ElementRef, SimpleChanges } from '@angular/core';
 import { Game } from 'src/models/game';
 import { GameService } from '../services/game.service';
 import { EditModalService } from '../components/editmodal/editmodal.service';
@@ -13,12 +13,10 @@ import { Player } from 'src/models/player';
 export class GameComponent {
   constructor(private gameService: GameService, private editModalService: EditModalService) { }
   @ViewChild('newPlayerTemplate', { static: true }) newPlayerTemplate: TemplateRef<any>;
-  pickCardAnimation = false;
-  currentCard: string = '';
   newPlayerName: string;
   newPlayerAvatar: string;
   newPlayerColor: string;
-  public game!: Game;
+  public game: Game = new Game;
   currentPlayerData: Player = new Player('Der Spieler', '', '');
   choosableAvatars: string[] = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png'];
   choosableColors = [
@@ -85,7 +83,6 @@ export class GameComponent {
       "description": `${this.currentPlayerData.name} darf eine Regel aufstellen, die für den Rest des Spiels gilt.`
     }
   ];
-  currentRule: { title: string; description: string };
   startForbidden: boolean = true;
   showNameError: boolean = false;
   showColorError: boolean = false;
@@ -93,13 +90,14 @@ export class GameComponent {
   preventAddPlayer: boolean = true;
   private subscription: Subscription;
   gameIsOver: boolean = false;
-  displayStack: string[] = [];
   cardOffset: number = 0;
 
 
   ngOnInit(): void {
-    this.newGame();
-    this.checkZeroPlayer();
+    this.gameService.loadGame();
+    this.subscription = this.gameService.getGame().subscribe(game => {
+      this.game = game;
+    });
     this.subscription = this.gameService.getCurrentPlayerData().subscribe(currentPlayerData => {
       this.currentPlayerData = currentPlayerData;
       this.updateRules();
@@ -107,32 +105,34 @@ export class GameComponent {
     this.subscription = this.gameService.gameIsOver().subscribe(gameIsOver => {
       this.gameIsOver = gameIsOver;
     });
-    this.removeLastFromDisplayStack();
+    if (this.game) {
+      this.checkZeroPlayer();
+    }
   }
 
   newGame() {
     this.gameService.startGame();
-    this.game = this.gameService.getGame();
   }
 
   resetGame() {
     this.gameService.resetGame();
-    this.game = this.gameService.getGame();
-    this.currentCard = '';
+    this.game.currentCard = '';
   }
 
   takeCard() {
     if (!this.startForbidden) {
-      if (!this.pickCardAnimation) {
-        this.currentCard = this.game.stack.pop() ?? '';
-        this.pickCardAnimation = true;
+      if (!this.game.pickCardAnimation) {
+        this.game.currentCard = this.game.stack.pop() ?? '';
+        this.game.pickCardAnimation = true;
         this.getRule();
         this.gameService.nextPlayer();
-        this.displayStack = [...this.game.stack];
+        this.game.displayStack = [...this.game.stack];
         this.cardOffset += 4;
+        this.gameService.updateGame(this.game);
         setTimeout(() => {
-          this.game.playedCards.push(this.currentCard)
-          this.pickCardAnimation = false;
+          this.game.playedCards.push(this.game.currentCard)
+          this.game.pickCardAnimation = false;
+          this.gameService.updateGame(this.game);
         }, 1000);
         this.gameService.isGameOver();
       }
@@ -143,8 +143,9 @@ export class GameComponent {
   }
 
   getRule() {
-    let cardNumber = +this.currentCard.split('_')[1];
-    this.currentRule = this.rules[cardNumber - 1];
+    let cardNumber = +this.game.currentCard.split('_')[1];
+    this.game.currentRule = this.rules[cardNumber - 1];
+    this.gameService.updateGame(this.game);
   }
 
   checkZeroPlayer() {
@@ -274,13 +275,6 @@ export class GameComponent {
           "description": `${this.currentPlayerData.name} darf eine Regel aufstellen, die für den Rest des Spiels gilt.`
         }
       ];
-    }
-  }
-
-  removeLastFromDisplayStack() {
-    this.displayStack = [...this.game.stack]
-    if (this.displayStack.length > 0) {
-      this.displayStack.pop(); // Entfernt das letzte Element aus `displayStack`
     }
   }
 }

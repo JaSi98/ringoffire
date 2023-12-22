@@ -42,3 +42,8 @@ testem.log
 Thumbs.db
 
 src/assets/img/ring-of-fire-2022-08-03-17-59-59-utc.mov
+
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json

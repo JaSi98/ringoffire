@@ -3,6 +3,7 @@ import { GameService } from '../services/game.service';
 import { Subscription } from 'rxjs';
 import { Player } from 'src/models/player';
 import { trigger, transition, query, style, stagger, animate } from '@angular/animations';
+import { Game } from 'src/models/game';
 
 @Component({
   selector: 'app-player',
@@ -25,18 +26,12 @@ import { trigger, transition, query, style, stagger, animate } from '@angular/an
 export class PlayerComponent {
   constructor(private gameService: GameService) {
 
-    this.subscription = this.gameService.getPlayers().subscribe(players => {
-      this.players = players;
-    });
-
-    this.subscription = this.gameService.getCurrentPlayer().subscribe(currentPlayer => {
-      this.currentPlayer = currentPlayer;
-
+    this.subscription = this.gameService.getGame().subscribe(game => {
+      this.game = game;
     });
   }
+  game: Game;
   private subscription: Subscription;
-  players: Player[] = [];
-  currentPlayer: number;
 
 
   ngOnDestroy() {
@@ -44,20 +39,20 @@ export class PlayerComponent {
   }
 
   getVisiblePlayers(): Player[] {
-    if (this.players.length <= 5) {
-      return this.players;
+    if (this.game?.players?.length <= 5) {
+      return this.game.players;
     }
 
     const visiblePlayers = [];
-    const startIndex = this.currentPlayer - 1 < 0 ? this.players.length - 1 : this.currentPlayer - 1;
+    const startIndex = this.game?.currentPlayer - 1 < 0 ? this.game?.players.length - 1 : this.game?.currentPlayer - 1;
     for (let i = 0; i < 5; i++) {
-      const index = (startIndex + i) % this.players.length;
-      visiblePlayers.push(this.players[index]);
+      const index = (startIndex + i) % this.game?.players.length;
+      visiblePlayers.push(this.game?.players[index]);
     }
     return visiblePlayers;
   }
 
   trackByPlayers(index: number, player: Player): any {
-    return player.id;
+    return player?.id;
   }
 }

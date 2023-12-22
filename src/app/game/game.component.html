@@ -3,17 +3,17 @@
     <div class="cardStack">
         <js-button color="primary" icon="refresh" (click)="resetGame()"></js-button>
         <!--Card Stack-->
-        <img *ngFor="let c of displayStack; let i = index;" [ngStyle]="{'right.px':  i*1}"
+        <img *ngFor="let c of game?.displayStack; let i = index;" [ngStyle]="{'right.px':  i*1}"
             src="assets/img/cards/card_cover.png" alt="">
-        <img *ngIf="game.stack.length !== 0" [ngStyle]="{'right.px': (displayStack.length - 1) * 1}"
+        <img *ngIf="game?.stack?.length !== 0" [ngStyle]="{'right.px': (game?.displayStack?.length - 1) * 1}"
             (click)="takeCard()" class="top-card" src="assets/img/cards/card_cover.png" alt="">
 
         <!--Stack for played cards-->
-        <img *ngFor="let card of game.playedCards" class="played-card" src="assets/img/cards/{{ card }}.png" alt="">
+        <img *ngFor="let card of game?.playedCards" class="played-card" src="assets/img/cards/{{ card }}.png" alt="">
 
         <!--Current Card (Animation)-->
-        <img *ngIf="pickCardAnimation" class="pick-card" style="right: 25px;"
-            src="assets/img/cards/{{ currentCard }}.png" alt="">
+        <img *ngIf="game.pickCardAnimation" class="pick-card" style="right: 25px;"
+            src="assets/img/cards/{{ game.currentCard }}.png" alt="">
     </div>
 </div>
 <js-button color="primary" icon="add" class="add-player-btn" (click)="openAddPlayer()"></js-button>
@@ -34,8 +34,8 @@
     <js-text-input icon="person_add" placeholder="Spielername eintippen..." [(ngModel)]="newPlayerName"></js-text-input>
 </ng-template>
 
-<js-card [title]="currentRule?.title ? currentRule.title : 'Zum Starten karte ziehen...'" class="task-card"
+<js-card [title]="game?.currentRule?.title ? game?.currentRule.title : 'Zum Starten karte ziehen...'" class="task-card"
     *ngIf="!startForbidden">
-    <p>{{ currentRule?.description ? currentRule.description : 'Klicke auf den Kartenstapel, um eine Karte zu ziehen,
+    <p>{{ game?.currentRule?.description ? game?.currentRule.description : 'Klicke auf den Kartenstapel, um eine Karte zu ziehen,
         wenn alle Spieler hinzugefügt und bereit sind.' }}</p>
 </js-card>
